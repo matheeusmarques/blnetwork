@@ -39,19 +39,8 @@ class Conexao {
                                 "root",
                                 "",
                                 array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-//
-//                $this->pdo = new PDO("mysql:host=localhost;dbname=tecnoif_baseinscricaoevento",
-//                                "tecnoif_root",
-//                                "officetads2015",
-//                                array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-
-//                $this->pdo = new PDO("mysql:host=localhost;dbname=inscricaoevento",
-//                                "root",
-//                                "",
-//                                array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-
             } catch (PDOException $e) {
-                print "<center><h2>Error!: " . $e->getMessage() . "</h2></center><br/>";
+                print "Erro!: " . $e->getMessage();
                 die();
             }
         }
@@ -59,9 +48,5 @@ class Conexao {
         //método que desconecta
         public function desconectar() {
             $this->pdo = null;
-        }
-
-        public function inserir(){
-
         }
 }

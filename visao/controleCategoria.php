@@ -10,24 +10,23 @@ if(!empty($_GET['tipo'])){
   switch ($_GET['tipo']) {
     case 'inserir':
       try {
-        if(isset($_POST['nome'])){
-          $categoria->setNome($_POST['nome']);
-        }
-
-        if(isset($_POST['descricao'])){
-          $categoria->setDescricao($_POST['descricao']);
-        }
-
-        if(isset($_POST['status'])){
-          $categoria->setStatus($_POST['status']);
-        }
-
-        $daoCategoria->queryInsert($categoria);
-        
-          var_dump($_POST);
-        } catch (Exception $e) {
-        echo "Error:".$e;
-      }
+      //   if(isset($_POST['nome'])){
+      //     $categoria->setNome($_POST['nome']);
+      //   }
+      //
+      //   if(isset($_POST['descricao'])){
+      //     $categoria->setDescricao($_POST['descricao']);
+      //   }
+      //
+      //   if(isset($_POST['status'])){
+      //     $categoria->setStatus($_POST['status']);
+      //   }
+      //
+      //   $daoCategoria->queryInsert($categoria);
+      //
+      //   } catch (Exception $e) {
+      //   echo "Error:".$e;
+      // }
 
     case 'excluir':
       try {
@@ -37,9 +36,20 @@ if(!empty($_GET['tipo'])){
       }
     break;
 
-    default:
-      # code...
-      break;
+    case 'update':
+      try {
+        if(isset($_POST['id']){
+          $categoria->setId($_POST['id']);
+          $categoria->setNome($_POST['nome']);
+          $categoria->setDescricao($_POST['descricao']);
+          $categoria->setStatus($_POST['status']);
+
+          $daoCategoria->queryUpdate($categoria);
+        }
+      } catch (Exception $e) {
+          echo "Error:".$e;
+      }
+
   }
 }
 ?>

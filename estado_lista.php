@@ -1,7 +1,6 @@
 <?php
-include "inc/modal.php";
 include "header.php";
-
+include "inc/modal.php";
 
 require_once "DAO/DAOEstado.php";
 require_once "modelo/Estado.php";
@@ -71,10 +70,17 @@ $listaEstados = $daoEstado->selectAll();
                     <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="false">Ações <span class="caret"></span>
                     </button>
                     <ul role="menu" class="dropdown-menu">
-                      <li><a href="#">Alterar</a>
-                      </li>
+                    <li>
+                        <a href="#" data-toggle="modal"
+                        data-estnome="'.$est->getNome().'"
+                        data-estid="'.$est->getID().'"
+                        data-estsigla="'.$est->getSigla().'"
+                        data-target="#dialog-edit-estado"
+                        >Alterar</a>
+                    </li>
                         <li>
-                          <a data-toggle="modal" data-target="#dialog-delete-estado"
+                          <a data-toggle="modal"
+                          data-target="#dialog-delete-estado"
                           data-nome="'.$est->getNome().'"
                           data-id="'.$est->getID().'"
                           href="#" >Excluir</a>
@@ -141,56 +147,6 @@ $listaEstados = $daoEstado->selectAll();
           </div>
         </div>
         <!-- /page content -->
-
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
-      </div>
-    </div>
-
-    <!-- jQuery -->
-    <script src="../vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- FastClick -->
-    <script src="../vendors/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
-    <script src="../vendors/nprogress/nprogress.js"></script>
-    <!-- bootstrap-progressbar -->
-    <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <!-- iCheck -->
-    <script src="../vendors/iCheck/icheck.min.js"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="../vendors/moment/min/moment.min.js"></script>
-    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <!-- bootstrap-wysiwyg -->
-    <script src="../vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
-    <script src="../vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
-    <script src="../vendors/google-code-prettify/src/prettify.js"></script>
-    <!-- jQuery Tags Input -->
-    <script src="../vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
-    <!-- Switchery -->
-    <script src="../vendors/switchery/dist/switchery.min.js"></script>
-    <!-- Select2 -->
-    <script src="../vendors/select2/dist/js/select2.full.min.js"></script>
-    <!-- Parsley -->
-    <script src="../vendors/parsleyjs/dist/parsley.min.js"></script>
-    <!-- Autosize -->
-    <script src="../vendors/autosize/dist/autosize.min.js"></script>
-    <!-- jQuery autocomplete -->
-    <script src="../vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
-    <!-- starrr -->
-    <script src="../vendors/starrr/dist/starrr.js"></script>
-    <!-- Custom Theme Scripts -->
-    <script src="../build/js/custom.min.js"></script>
-
-    <script src="../build/js/custom.min.js"></script>
-    <script src="main.js"></script>
-
-  </body>
-</html>
+<?php
+  include_once "footer.php";
+?>

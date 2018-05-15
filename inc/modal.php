@@ -30,7 +30,7 @@ $listaEstados = $daoEstado->selectAll();
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
-        <form action="visao/updateCidade.php" method="POST" id="demo-form" data-parsley-validate>
+        <form action="visao/controleCidade.php?tipo=update" method="POST" id="demo-form" data-parsley-validate>
           <label for="fullname">Nome:</label>
           <input type="text" id="nome" class="form-control" name="nome" required />
           <input type="hidden" type="text" id="id" class="form-control" name="id" data-parsley-trigger="change" value="" required />
@@ -56,7 +56,7 @@ $listaEstados = $daoEstado->selectAll();
     </div>
   </div>
 
-  <!-- DIALOG CIDADE -->
+  <!-- DIALOG DELETE ESTADO -->
   <div id="dialog-delete-estado" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -72,3 +72,28 @@ $listaEstados = $daoEstado->selectAll();
       </div>
     </div>
   </div>
+
+<!-- DIALOG EDIT ESTADO -->
+  <div id="dialog-edit-estado" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-body">
+          <form action="visao/controleEstado.php?tipo=update" method="POST" id="demo-form" data-parsley-validate>
+            <label for="nome">Estado:</label>
+            <input type="text" id="nome" class="form-control" name="nome" value=""required />
+            <input type="hidden" type="text" id="id" class="form-control" name="id" data-parsley-trigger="change" value="" required />
+            <label for="sigla">Sigla: </label>
+            <input type="text" id="sigla" class="form-control" name="sigla" value="" required />
+        </div>
+
+        <div class="modal-footer">
+          <center>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button id="confirmar" type="submit" class="btn btn-primary">Salvar</button>
+          </center>
+        </form>
+          </div>
+        </div>
+
+      </div>
+    </div>

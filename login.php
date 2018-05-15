@@ -30,7 +30,7 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form id="login-form" action="visao/login.php" method="POST" role="form" data-parsley-validate>
+            <form id="login-form" action="visao/controleUsuario.php?tipo=login" method="POST" role="form" data-parsley-validate>
               <h1>Login</h1>
               <div>
                 <input type="text" id="login" name="login" class="form-control" placeholder="Login" required="true" />
