@@ -3,7 +3,7 @@ session_start();
 if(empty($_SESSION['login']) && empty($_SESION['senha'])){
   unset($_SESSION['login']);
   unset($_SESSION['senha']);
-  header('Location:http://localhost/admin/login.php?status=usuarioff');
+  header('Location:http://localhost/admin/page_403.html');
 }
 ?>
 <!DOCTYPE html>

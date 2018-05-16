@@ -29,14 +29,14 @@ if(!empty($_GET['tipo'])){
       break;
 
     case 'excluir':
-      try {
-        if(isset($_POST['id'])){
-          $daoUsuario->queryDelete($_POST['id']);
-        }
-      } catch (\Exception $e) {
+      if(isset($_GET['id'])){
+        try {
+            $daoUsuario->queryDelete($_GET['id']);
+        }catch (Exception $e) {
           echo "Error:".$e;
+        }
       }
-      break;
+    break;
 
     case 'update':
       try {

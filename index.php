@@ -453,4 +453,5 @@ include "header.php";
         </div>
         <!-- /page content -->
         <?php
-        include_once "footer.php"; ?>
+        include_once "footer.php";
+        ?>

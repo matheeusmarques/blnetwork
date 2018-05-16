@@ -11,45 +11,41 @@ if(!empty($_GET['tipo'])){
 
   switch ($_GET['tipo']) {
     case 'inserir':
-      try {
-        if(isset($_POST["nome"]) && isset($_POST["estado"])){
+      if(isset($_POST["nome"]) && isset($_POST["estado"])){
+        try {
           $cidade->setNome($_POST["nome"]);
           $cidade->setIdEstado($_POST["estado"]);
           $daoCidade->queryInsert($cidade);
           header("Location: http://localhost/admin/cidade_lista.php?status=sucessfull");
-        }else {
-          header("Location: http://localhost/admin/cidade_lista.php?status=error");
+        }catch (Exception $e) {
+          echo "Erro:".$e;
         }
-      } catch (Exception $e) {
-        echo "Erro:".$e;
       }
       break;
 
     case 'excluir':
-      try {
-        if(isset($_GET['id'])){
-          $id = $_GET['id'];
-          $daoCidade->queryDelete($id);
-          header("Location: http://localhost/admin/cidade_lista.php?status=removed");
+      if(isset($_GET['id'])){
+        try {
+            $id = $_GET['id'];
+            $daoCidade->queryDelete($id);
+            header("Location: http://localhost/admin/cidade_lista.php?status=removed");
+        }catch (Exception $e) {
+          echo "Error: ".$e;
         }
-      } catch (Exception $e) {
-        echo "Error: ".$e;
       }
       break;
 
     case 'update':
-      try {
-          if(isset($_POST["id"]) && isset($_POST["nome"]) && isset($_POST["estadoid"])){
+      if(isset($_POST["id"]) && isset($_POST["nome"]) && isset($_POST["estadoid"])){
+        try {
             $cidade->setID($_POST['id']);
             $cidade->setNome($_POST['nome']);
             $cidade->setIdEstado($_POST['estadoid']);
             $daoCidade->queryUpdate($cidade);
             header("Location: http://localhost/admin/cidade_lista.php?status=updated");
-          }else{
-            header("Location: http://localhost/admin/cidade_lista.php?status=error");
-          }
-      } catch (Exception $e) {
-          echo "Error: ".$e;
+          } catch (Exception $e) {
+            echo "Error: ".$e;
+        }
       }
       break;
   }
