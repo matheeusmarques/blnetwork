@@ -4,26 +4,30 @@ require_once "../modelo/Categoria.php";
 require_once "../DAO/DAOCategoria.php";
 require_once "../DAO/mySQL.class.php";
 
-if(!empty($_GET['tipo'])){
+if(!empty($_GET['action'])){
   $categoria = new Categoria();
   $daoCategoria = new DAOCategoria();
-  switch ($_GET['tipo']) {
-    case 'inserir':
-      if(isset($_POST['nome'] && isset($_POST['descricao'])){
+  switch ($_GET['action']) {
+    case 'insert':
+      if(isset($_POST['name']) && isset($_POST['description']) ) {
         try {
-          $categoria->setNome($_POST['nome']);
+          $categoria->setName($_POST['name']);
           $categoria->setStatus($_POST['status']);
-          $categoria->setDescricao($_POST['descricao']);
+          $categoria->setDescription($_POST['description']);
           $daoCategoria->queryInsert($categoria);
+          // var_dump($_POST);
+          // print_r("TESTE");
+          header("Location: http://localhost/admin/categoria.php?status=add");
         } catch (Exception $e) {
           echo "Error:".$e;
         }
       }
-      case 'excluir':
+      case 'delete':
         if(isset($_GET['id'])){
           try {
-            $daoCategoria->queryDelete($_GET['id']);
-            header("Location: http://localhost/admin/categoria_lista.php?status=removed");
+            $categoria->setId($_GET['id']);
+            $daoCategoria->queryDelete($categoria);
+            header("Location: http://localhost/admin/categoria.php?status=removed");
           }catch (Exception $e) {
             echo "Error:".$e;
           }
@@ -32,13 +36,14 @@ if(!empty($_GET['tipo'])){
 
     case 'update':
       try {
-        if(isset($_POST['id']){
+        if(isset($_POST['id']) ){
           $categoria->setId($_POST['id']);
-          $categoria->setNome($_POST['nome']);
-          $categoria->setDescricao($_POST['descricao']);
+          $categoria->setName($_POST['name']);
           $categoria->setStatus($_POST['status']);
+          $categoria->setDescription($_POST['description']);
 
           $daoCategoria->queryUpdate($categoria);
+          header("Location: http://localhost/admin/categoria.php?status=updated");
         }
       } catch (Exception $e) {
           echo "Error:".$e;

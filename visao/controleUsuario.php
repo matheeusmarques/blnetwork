@@ -4,13 +4,13 @@ include_once "../DAO/mySQL.class.php";
 require_once "../modelo/Usuario.php";
 
 
-if(!empty($_GET['tipo'])){
+if(!empty($_GET['action'])){
 
   $usuario = new Usuario();
   $daoUsuario = new DAOUsuario();
 
-  switch ($_GET['tipo']) {
-    case 'inserir':
+  switch ($_GET['action']) {
+    case 'insert':
       try {
         if(isset($_POST['login']) && isset($_POST['pessoa_id']) && isset($_POST['senha'])
         && isset($_POST['email']) && isset($_POST['tipo'])) {
@@ -18,20 +18,47 @@ if(!empty($_GET['tipo'])){
           $usuario->setSenha($_POST['senha']);
           $usuario->setEmail($_POST['email']);
           $usuario->setTipo($_POST['tipo']);
-          $usuario->setSaldo($_POST['saldo']);
+          $usuario->setSaldo(0.0);
           $usuario->setPessoaId($_POST['pessoa_id']);
-          $usuario->setStatus($_POST['status']);
-          $daoPessoa->queryInsert($usuario);
+          $usuario->setStatus(1);
+          $daoUsuario->queryInsert($usuario);
+          header("Location: http://localhost/admin/usuario.php?status=sucessful");
+
         }
       }catch(Exception $e){
           echo "Error:".$e;
       }
       break;
 
-    case 'excluir':
+    case 'register':
+    echo "teste";
+      try {
+        if(isset($_POST['login'])) {
+          // echo "test2e";
+          var_dump($_POST);
+          $usuario->setLogin($_POST['login']);
+          $usuario->setSenha($_POST['password']);
+          $usuario->setEmail($_POST['email']);
+          // $usuario->setTipo($_POST['tipo']);
+          $usuario->setTipo("membro");
+          $usuario->setSaldo(0.0);
+          // $usuario->setPessoaId($_POST['pessoa_id']) ;
+          $usuario->setStatus(1);
+          $daoUsuario->queryRegister($usuario);
+          // var_dump($daoUsuario->queryRegister($usuario));
+          header("Location: http://localhost/admin/login.php#signin");
+
+        }
+      }catch(Exception $e){
+          echo "Error:".$e;
+      }
+      break;
+
+    case 'delete':
       if(isset($_GET['id'])){
         try {
             $daoUsuario->queryDelete($_GET['id']);
+            header("Location: http://localhost/admin/usuario.php?status=removed");
         }catch (Exception $e) {
           echo "Error:".$e;
         }
@@ -42,14 +69,17 @@ if(!empty($_GET['tipo'])){
       try {
         if(isset($_POST['id'])){
           $usuario->setLogin($_POST['login']);
-          $usuario->setSenha($_POST['senha']);
+          // $usuario->setSenha($_POST['senha']);
           $usuario->setEmail($_POST['email']);
+          $usuario->setId($_POST['id']);
           $usuario->setTipo($_POST['tipo']);
-          $usuario->setSaldo($_POST['saldo']);
+          // $usuario->setSaldo($_POST['saldo']);
           $usuario->setPessoaId($_POST['pessoa_id']);
           $usuario->setStatus($_POST['status']);
 
           $daoUsuario->queryUpdate($usuario);
+          header("Location: http://localhost/admin/usuario.php?status=updated");
+
        }
        ///else{
       //   // heade;
@@ -73,10 +103,12 @@ if(!empty($_GET['tipo'])){
             $_SESSION['id'] = $currentuser->getId();
             $_SESSION['login'] = $currentuser->getLogin();
             $_SESSION['email'] = $currentuser->getEmail();
-            $_SESSION['senha'] = $currentuser->getSenha();
             $_SESSION['tipo'] = $currentuser->getTipo();
             $_SESSION['saldo'] = $currentuser->getSaldo();
             $_SESSION['status'] = $currentuser->getStatus();
+            $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+            $_SESSION['p_id'] = $currentuser->getPessoaId();
+            $_SESSION['last_activity'] = time();
             header("Location: http://localhost/admin/index.php");
           }else{
             unset ($_SESSION['login']);
@@ -91,17 +123,10 @@ if(!empty($_GET['tipo'])){
       break;
 
       case 'logout':
-        if(isset($_SESSION['login'])){
-          try {
+            session_start();
             session_destroy();
             header("Location: http://localhost/admin/login.php");
-          } catch (Exception $e) {
-              echo "Error: ".$e;
-          }
-        }
         break;
     }
-}else{
-  return header("Location: http://localhost/admin/page_403.html");
-}
+  }
  ?>

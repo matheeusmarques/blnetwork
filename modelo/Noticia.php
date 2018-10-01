@@ -3,54 +3,72 @@
 class Noticia{
 
   private $id;
-  private $titulo;
-  private $tituloauxiliar;
-  private $descricao;
-  private $datapublicacao;
-  private $categoria_id;
+  private $title;
+  private $auxtitle;
+  private $description;
+  private $date_sent;
+  private $image_cover;
+  private $category_id;
+  private $user_id;
 
   public function setId($id){
     $this->id = $id;
   }
 
-  public function setTitulo($titulo){
-    $this->titulo = $titulo;
+  public function setTitle($title){
+    $this->title = $title;
   }
 
-  public function setTituloAuxiliar($tituloauxiliar){
-    $this->tituloauxiliar = $tituloauxiliar;
+  public function setImageCover($image_cover){
+    $this->image_cover = $image_cover;
   }
 
-  public function setDescricao($descricao){
-    $this->descricao = $descricao;
+  public function getImageCover(){
+    return $this->image_cover;
   }
 
-  public function setDataPublicacao($datapublicacao){
-    $this->datapublicacao = $datapublicacao;
+  public function setAuxTitle($auxtitle){
+    $this->auxtitle = $auxtitle;
   }
 
-  public function setCategoriaId($categoria_id){
-    $this->categoria_id = $categoria_id;
+  public function setDescription($description){
+    $this->description = $description;
   }
 
-  public function getCategoriaId(){
-    return $this->categoria_id;
+  public function setUserId($user_id){
+    $this->user_id = $user_id;
   }
 
-  public function getTitulo(){
-    return $this->titulo;
+  public function setDateSent($date_sent){
+    $this->date_sent = $date_sent;
   }
 
-  public function getTituloAuxiliar(){
-    return $this->tituloAuxiliar;
+  public function setCategoryId($category_id){
+    $this->category_id = $category_id;
   }
 
-  public function getDescricao(){
-    return $this->descricao;
+  public function getCategoryId(){
+    return $this->category_id;
   }
 
-  public function getDataPublicacao(){
-    return $this->datapublicacao;
+  public function getUserId(){
+    return $this->user_id;
+  }
+
+  public function getTitle(){
+    return $this->title;
+  }
+
+  public function getAuxTitle(){
+    return $this->auxtitle;
+  }
+
+  public function getDescription(){
+    return $this->description;
+  }
+
+  public function getDateSent(){
+    return $this->date_sent;
   }
 
   public function getId(){

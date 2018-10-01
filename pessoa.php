@@ -1,33 +1,42 @@
 <?php
-include_once "header.php";
+// INCLUDES //
+include "header.php";
+include "inc/modal_pessoa.php";
 
-require_once "DAO/DAOCidade.php";
-require_once "DAO/DAOPessoa.php";
+
+// REQUIRES //
 require_once "DAO/mySQL.class.php";
+require_once "modelo/Pessoa.php";
 require_once "modelo/Cidade.php";
+require_once "DAO/DAOPessoa.php";
+require_once "DAO/DAOCidade.php";
 
+$daoPessoa = new DAOPessoa();
+$pessoa = new Pessoa();
+$listaPessoas = $daoPessoa->selectAll();
 
 $cidade = new Cidade();
 $daoCidade = new DAOCidade();
-$daoPessoa = new DAOPessoa();
-
 $listaCidades = $daoCidade->selectAll();
+
 ?>
         <!-- page content -->
+        <body>
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Plain Page</h3>
+                <h3>Lista de Pessoas</h3>
               </div>
 
               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
+                  <div class="btn-group" style="float: right; padding-right: 30px;">
+                    <button type="button"
+                    data-target="#dialog-new-pessoa"
+                    data-toggle="modal"
+                    data-userid="<?php echo $_SESSION['id'];?>"
+                    class="btn btn-round btn-primary">Nova Pessoa</button>
                   </div>
                 </div>
               </div>
@@ -35,72 +44,132 @@ $listaCidades = $daoCidade->selectAll();
 
             <div class="clearfix"></div>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Plain Page</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <form id="demo-form"  method="POST" action="visao/pesssoa.php?tipo=cadasa" role="form" data-parsley-validate>
-                      <label for="nome">Nome Completo:</label>
-                      <input type="text" id="nome" class="form-control" name="nome" required />
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel ">
+                <!-- <div class="x_title">
+                  <h2>Responsive example<small>Users</small></h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Settings 1</a>
+                        </li>
+                        <li><a href="#">Settings 2</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div> -->
 
-                      <label for="cpf">CPF:</label>
-                      <input type="text" id="cpf" class="form-control" name="cpf" required />
+                  <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                    <thead>
+                      <tr>
+                        <th>Nome</th>
+                        <th>Sexo</th>
+                        <th>D. Nascimento</th>
+                        <th>CPF</th>
+                        <th>RG</th>
+                        <th>Status</th>
+                        <th>Opções</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                        foreach ($listaPessoas as $pessoa) {
+                          echo '<tr>';
+                            echo '<td>'.$pessoa->getNome().'</td>';
+                            echo '<td>'.$pessoa->getSexo().'</td>';
+                            echo '<td>'.$pessoa->getDataNascimento().'</td>';
+                            echo '<td>'.$pessoa->getCpf().'</td>';
+                            echo '<td>'.$pessoa->getRg().'</td>';
+                            echo '<td>';
+                            if($pessoa->getStatus() == "1")
+                              echo '<span class="label label-success">Ativada</span>';
+                            else
+                              echo '<span class="label label-danger">Desativada</span>';
+                            echo "</td>";
+                            echo '<td><div class="btn-group">
+      <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="false">Ações <span class="caret"></span>
+      </button>
+      <ul role="menu" class="dropdown-menu">
+      <li>
+          <a href="#" data-toggle="modal"
+          data-target="#dialog-edit-pessoa"
+          data-nome="'.$pessoa->getNome().'"
+          data-id="'.$pessoa->getId().'"
+          data-sexo="'.$pessoa->getSexo().'"
+          data-nascimento="'.$pessoa->getDataNascimento().'"
+          data-cidade_id="'.$pessoa->getCidadeId().'"
+          data-cpf="'.$pessoa->getCpf().'"
+          data-rg="'.$pessoa->getRg().'"
+          data-status="'.$pessoa->getStatus().'"
+          >Alterar</a>
+      </li>
+          <li>
+            <a data-toggle="modal"
+            data-target="#dialog-delete-pessoa"
+            data-nome="'.$pessoa->getNome().'"
+            data-id="'.$pessoa->getId().'"
+            href="#" >Excluir</a>
+        </li>
+      </ul>
+      </div></td>';
+                          echo '</tr>';
+                        }
+                       ?>
+                    </tbody>
+                  </table>
+                  <?php
+                  if(isset($_GET['status'])){
+                    switch ($_GET['status']) {
+                      case 'removed':
+                      echo '<center><div class="alert alert-success alert-dismissible fade in" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                      </button>
+                      <strong>Removido com sucesso!</strong>
+                      </div></center>';
+                      break;
 
-                      <label for="rg">RG:</label>
-                      <input type="text" id="rg" class="form-control" name="rg" required />
+                      case 'error':
+                      echo '<center><div class="alert alert-danger alert-dismissible fade in" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                      </button>
+                      <strong>Houve um erro ao adicionar. Tente novamente!</strong>
+                      </div></center>';
+                      break;
 
-                      <label for="datanascimento">Data de Nascimento:</label>
-                      <input type="text" id="datanascimento" class="form-control" name="datanascimento" required />
+                      case 'updated':
+                      echo '<center><div class="alert alert-success alert-dismissible fade in" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                      </button>
+                      <strong>Atualizado com sucesso!</strong>
+                      </div></center>';
+                      break;
 
-                      <label>Sexo *:</label>
-                      <p>
-                        M:
-                        <input type="radio" class="flat" name="sexo" id="genderM" value="M" checked="" required /> F:
-                        <input type="radio" class="flat" name="sexo" id="genderF" value="F" />
-                      </p>
+                      case 'add':
+                      echo '<center><div class="alert alert-success alert-dismissible fade in" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                      </button>
+                      <strong>Adicionado com sucesso!</strong>
+                      </div></center>';
+                      break;
 
-                          <label for="heard">Cidade:</label>
-                          <select name="cidade" id="cidade" class="form-control" required>
-                            <?php
-                              foreach($listaCidades as $cidade){
-                                echo '<option value="'.$cidade->getId().'">
-                                '.$cidade->getNome().'</option>';
-                              }
-                            ?>
-                          </select>
+                      default:
+                      // code...
+                      break;
+                    }
 
-                          <br/>
-                              <button type="button" class="btn btn-primary">Cancelar</button>
-                              <button type="reset" class="btn btn-primary">Limpar Campos</button>
-                              <button type="submit" class="btn btn-success">Enviar</button>
+                  } ?>
 
-                    </form>
-                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <!-- /page content -->
-        <?php
-          include_once "footer.php";
-        ?>
+      </div>
+    <?php
+      include_once "footer.php";
+    ?>

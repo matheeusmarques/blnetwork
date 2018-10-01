@@ -1,7 +1,7 @@
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+  BL Network - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
   </div>
   <div class="clearfix"></div>
 </footer>
@@ -55,7 +55,9 @@
 <script src="../build/js/custom.min.js"></script>
 
 <!-- Main JS -->
-<script src="main.js"></script>
+<script src="js/main.js"></script>
+
+<!-- JQUERY mask -->
 
 <!-- Datatables -->
 <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -73,6 +75,7 @@
 <script src="../vendors/jszip/dist/jszip.min.js"></script>
 <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
 <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+<script src="js/jquery.mask.js"></script>
 
 </body>
 </html>

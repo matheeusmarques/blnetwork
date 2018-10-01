@@ -1,9 +1,15 @@
 <?php
+// define( 'SECURITY_HASH', 'vaitomanocuporra' );
 session_start();
 if(empty($_SESSION['login']) && empty($_SESION['senha'])){
   unset($_SESSION['login']);
   unset($_SESSION['senha']);
-  header('Location:http://localhost/admin/page_403.html');
+  header('Location:http://localhost/admin/403.html');
+}elseif( (time() - $_SESSION['last_activity']) >= 1800 ){
+  session_destroy();
+  header("Location: http://localhost/admin/login.php");
+}else{
+  $_SESSION['last_activity'] = time();
 }
 ?>
 <!DOCTYPE html>
@@ -23,6 +29,7 @@ if(empty($_SESSION['login']) && empty($_SESION['senha'])){
   <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <!-- NProgress -->
   <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+
   <!-- iCheck -->
   <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
   <!-- bootstrap-wysiwyg -->
@@ -47,7 +54,7 @@ if(empty($_SESSION['login']) && empty($_SESION['senha'])){
   <link href="../build/css/custom.min.css" rel="stylesheet">
 </head>
 
-<body class="nav-md footer_fixed">
+<body class="nav-md">
   <div class="container body">
     <div class="main_container">
       <div class="col-md-3 left_col">
@@ -88,28 +95,39 @@ if(empty($_SESSION['login']) && empty($_SESION['senha'])){
                     <li><a href="perfil.php">Meu Perfil</a></li>
                   </ul>
                 </li>
-                <li><a><i class="fa fa-edit"></i> Cadastros <span class="fa fa-chevron-down"></span></a>
+                <!-- <li><a><i class="fa fa-edit"></i> Cadastros <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
                     <li><a href="estado.php">Estado</a></li>
                     <li><a href="cidade.php">Cidade</a></li>
                     <li><a href="pessoa.php">Pessoa</a></li>
                     <li><a href="usuario.php">Usuário</a></li>
                   </ul>
+                </li> -->
+                <li><a><i class="fa fa-edit"></i> Cadastros <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li><a href="estado.php">Estados</a></li>
+                    <li><a href="cidade.php">Cidades</a></li>
+                    <li><a href="pessoa.php">Pessoas</a></li>
+                    <li><a href="usuario.php">Usuários</a></li>
+                  </ul>
+                </li>
+                <li><a><i class="fa fa-money"></i> Financeiro <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li><a href="banco.php">Meus Bancos</a></li>
+                    <li><a href="pagamento.php">Pagamentos</a></li>
+                  </ul>
                 </li>
                 <li><a><i class="fa fa-newspaper-o"></i> Notícias <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="perfil.php">Novas Notícias</a></li>
-                    <li><a href="perfil.php">Todas Notícias</a></li>
-                    <li><a href="perfil.php">Minhas Notícias</a></li>
-                    <li><a href="perfil.php">Categorias</a></li>
+                    <li><a href="noticia.php">Todas Notícias</a></li>
+                    <li><a href="noticia.php?id=">Minhas Notícias</a></li>
+                    <li><a href="categoria.php">Categorias</a></li>
                   </ul>
                 </li>
-                <li><a><i class="fa fa-table"></i> Listas <span class="fa fa-chevron-down"></span></a>
+                <li><a><i class="fa glyphicon-envelope"></i>   Suporte <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="estado_lista.php">Estados</a></li>
-                    <li><a href="cidade_lista.php">Cidades</a></li>
-                    <li><a href="pessoa_lista.php">Pessoas</a></li>
-                    <li><a href="usuario_lista.php">Usuários</a></li>
+                    <li><a href="ticket_view.php">Visualizar Ticket</a></li>
+                    <li><a href="ticket.php">Todos Tickets</a></li>
                   </ul>
                 </li>
               </ul>
@@ -171,7 +189,7 @@ if(empty($_SESSION['login']) && empty($_SESION['senha'])){
             <a data-toggle="tooltip" data-placement="top" title="Lock">
               <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
             </a>
-            <a data-toggle="tooltip" data-placement="top" href="visao/logout.php">
+            <a data-toggle="tooltip" data-placement="top" href="visao/controleUsuario.php?action=logout">
               <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
             </a>
           </div>
@@ -190,7 +208,8 @@ if(empty($_SESSION['login']) && empty($_SESION['senha'])){
             <ul class="nav navbar-nav navbar-right">
               <li class="">
                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  <img src="images/img.jpg" alt="">John Doe
+                  <img src="images/img.jpg" alt=""><?php
+                  echo $_SESSION['login']; ?>
                   <span class=" fa fa-angle-down"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -202,7 +221,7 @@ if(empty($_SESSION['login']) && empty($_SESION['senha'])){
                     </a>
                   </li>
                   <li><a href="javascript:;">Help</a></li>
-                  <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                  <li><a href="visao/controleUsuario.php?action=logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                 </ul>
               </li>
 

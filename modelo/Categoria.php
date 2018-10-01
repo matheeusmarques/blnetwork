@@ -3,8 +3,8 @@
 
 class Categoria{
   private $id;
-  private $nome;
-  private $descricao;
+  private $name;
+  private $description;
   private $status;
 
 
@@ -16,12 +16,12 @@ class Categoria{
     return $this->id;
   }
 
-  public function setNome($nome){
-    $this->nome = $nome;
+  public function setName($name){
+    $this->name = $name;
   }
 
-  public function setDescricao($descricao){
-    $this->descricao = $descricao;
+  public function setDescription($description){
+    $this->description = $description;
   }
 
   public function setStatus($status){
@@ -32,12 +32,12 @@ class Categoria{
     return $this->status;
   }
 
-  public function getNome(){
-    return $this->nome;
+  public function getName(){
+    return $this->name;
   }
 
-  public function getDescricao(){
-    return $this->descricao;
+  public function getDescription(){
+    return $this->description;
   }
 
 

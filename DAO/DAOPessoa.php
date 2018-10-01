@@ -40,27 +40,68 @@ class DAOPessoa{
       }
     }
 
+    public function countMens(){
+      try {
+        $sql = "SELECT COUNT(*) FROM pessoa WHERE sexo = 'M'";
+        $t_sql = $this->pdo->prepare($sql);
+        $t_sql->execute();
+        $total = $t_sql->fetch(PDO::FETCH_ASSOC);
+        return $total['COUNT(*)'];
+      } catch (Exception $e) {
+        echo "Error:".$e->getMessage();
+      }
+    }
+
+    public function countRows(){
+      try {
+        $sql = "SELECT COUNT(*) FROM pessoa";
+        $t_sql = $this->pdo->prepare($sql);
+        $t_sql->execute();
+        $total = $t_sql->fetch(PDO::FETCH_ASSOC);
+        return $total['COUNT(*)'];
+      } catch (Exception $e) {
+        echo "Error:".$e->getMessage();
+      }
+    }
+
+    public function countWomans(){
+      try {
+        $sql = "SELECT COUNT(*) FROM pessoa WHERE sexo = 'M'";
+        $t_sql = $this->pdo->prepare($sql);
+        $t_sql->execute();
+        $total = $t_sql->fetch(PDO::FETCH_ASSOC);
+        return $total['COUNT(*)'];
+      } catch (Exception $e) {
+        echo "Error:".$e->getMessage();
+      }
+    }
+
     public function queryUpdate(Pessoa $pessoa){
       try {
-        $sql = "UPDATE estado SET "
+        $sql = "UPDATE pessoa SET "
           . "nome = :nome,"
-          . "idade = :idade,"
           . "cpf = :cpf,"
-          . "rg = :rg,"
-          . "status = :status"
+          . "sexo = :sexo,"
+          . "data_nascimento = :data_nascimento,"
+          . "cidade_id = :cidade_id,"
+          . "status = :status,"
+          . "rg = :rg "
           . "WHERE id = :id";
           $t_sql = $this->pdo->prepare($sql);
-          $t_sql -> bindValue(":id", $pessoa->getID());
+          $t_sql -> bindValue(":id", $pessoa->getId());
           $t_sql -> bindValue(":nome", $pessoa->getNome());
-          $t_sql -> bindValue(":idade", $pessoa->getIdade());
           $t_sql -> bindValue(":cpf", $pessoa->getCpf());
           $t_sql -> bindValue(":rg", $pessoa->getRg());
+          $t_sql -> bindValue(":data_nascimento", $pessoa->getDataNascimento());
+          $t_sql -> bindValue(":cidade_id", $pessoa->getCidadeId());
           $t_sql -> bindValue(":status", $pessoa->getStatus());
+          $t_sql -> bindValue(":sexo", $pessoa->getSexo());
           return $t_sql->execute();
       } catch (PDOException $e) {
         echo "Error: ".$e;
       }
     }
+
 
     public function queryDelete($id){
       try {
@@ -133,6 +174,20 @@ class DAOPessoa{
       $list['status'] = str_replace("0", "Inativo", $list['status']);
     } catch (PDOException $e) {
       echo "Error: ".$e;
+    }
+  }
+
+  public function querySelectPessoa(Pessoa $pessoa){
+    try {
+      $sql = "SELECT * FROM pessoa WHERE id = :id";
+      $t_sql = $this->pdo->prepare($sql);
+      $t_sql->bindValue(":id", $pessoa->getId());
+      $t_sql->execute();
+      $pessoa = $t_sql->fetch(PDO::FETCH_ASSOC);
+
+      return $pessoa;
+    } catch (Exception $e) {
+      echo "Error: ".$e->getMessage();
     }
   }
 

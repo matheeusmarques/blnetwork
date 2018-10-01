@@ -1,8 +1,17 @@
 <?php
 include_once "header.php";
+include "inc/modal_categoria.php";
+
+
+require_once "DAO/DAOCategoria.php";
+require_once "modelo/Categoria.php";
+require_once "DAO/mySQL.class.php";
+
+$daoCategoria = new DAOCategoria();
+$listaCategorias = $daoCategoria->selectAll();
 ?>
 <!-- page content -->
-<div class="right_col" role="main">
+<!-- <div class="right_col" role="main">
   <div class="">
     <div class="page-title">
       <div class="title_left">
@@ -27,7 +36,7 @@ include_once "header.php";
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
-            <h2>Categoria <small>Click to validate</small></h2>
+            <h2>Categoria</h2>
             <ul class="nav navbar-right panel_toolbox">
               <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
               </li>
@@ -47,11 +56,15 @@ include_once "header.php";
           </div>
           <div class="x_content">
 
-            <!-- start form for validation -->
-            <form id="demo-form" method="POST" action="visao/controleCategoria.php?tipo=inserir"data-parsley-validate>
+            <!- start form for validation -->
+            <!-- <form id="demo-form" method="POST" action="visao/controleCategoria.php?tipo=inserir"data-parsley-validate>
               <label for="titulo">Título: </label>
               <input type="text" id="titulo" class="form-control" name="titulo" required />
 
+              <br />
+              <label for="descricao">Descrição:</label>
+              <textarea placeholder="Descreva aqui a categoria" id="descricao" required="required" class="form-control" name="descricao" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-minlength-message="Come on! You need to enter at least a 20 caracters long comment.."
+              data-parsley-validation-threshold="10"></textarea>
               <br />
 
               <label for="status">Status: </label>
@@ -59,68 +72,141 @@ include_once "header.php";
                 <option value="">Escolha..</option>
                 <option value="ativada">Ativada</option>
                 <option value="desativada">Desativada</option>
-                <!-- <option value="mouth">Bug</option> -->
-              </select>
-              <br />
+                <!- <option value="mouth">Bug</option> -->
+              <!-- </select>
 
-              <label for="descricao">Descrição:</label>
-                  <textarea placeholder="Descreva aqui a categoria" id="descricao" required="required" class="form-control" name="descricao" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-minlength-message="Come on! You need to enter at least a 20 caracters long comment.."
-                    data-parsley-validation-threshold="10"></textarea>
 
                   <br/>
                   <button type="submit" class="btn btn-primary" name="button">Cadastrar</button>
             </form>
             <!-- end form for validations -->
 
-          </div>
+          <!-- </div>
         </div>
 
   </div>
 </div>
   </div>
-</div>
-<!-- /page content -->
+</div> -->
+<body>
+  <div class="right_col" role="main">
+            <div class="">
+              <div class="page-title">
+                <div class="title_left">
+                  <h3>Lista de Categorias</h3>
+                </div>
 
-<!-- footer content -->
-<footer>
-  <div class="pull-right">
-    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-  </div>
-  <div class="clearfix"></div>
-</footer>
-<!-- /footer content -->
-</div>
-</div>
+                <div class="title_right">
+                  <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="btn-group" style="float: right; padding-right: 30px;">
+                      <button type="button"
+                      data-target="#dialog-new-categoria"
+                      data-toggle="modal"
+                      data-userid="<?php echo $_SESSION['id'];?>"
+                      class="btn btn-round btn-primary">Nova Categoria <i class="fa fa-ticket">  </i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-<!-- jQuery -->
-<script src="../vendors/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- FastClick -->
-<script src="../vendors/fastclick/lib/fastclick.js"></script>
-<!-- NProgress -->
-<script src="../vendors/nprogress/nprogress.js"></script>
-<!-- Chart.js -->
-<script src="../vendors/Chart.js/dist/Chart.min.js"></script>
-<!-- jQuery Sparklines -->
-<script src="../vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-<!-- Flot -->
-<script src="../vendors/Flot/jquery.flot.js"></script>
-<script src="../vendors/Flot/jquery.flot.pie.js"></script>
-<script src="../vendors/Flot/jquery.flot.time.js"></script>
-<script src="../vendors/Flot/jquery.flot.stack.js"></script>
-<script src="../vendors/Flot/jquery.flot.resize.js"></script>
-<!-- Flot plugins -->
-<script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-<script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-<script src="../vendors/flot.curvedlines/curvedLines.js"></script>
-<!-- DateJS -->
-<script src="../vendors/DateJS/build/date.js"></script>
-<!-- bootstrap-daterangepicker -->
-<script src="../vendors/moment/min/moment.min.js"></script>
-<script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+              <div class="clearfix"></div>
 
-<!-- Custom Theme Scripts -->
-<script src="../build/js/custom.min.js"></script>
+              <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="x_panel">
+                    <div class="x_content">
+                      <table style="" id="datatable" class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($listaCategorias as $categoria) {
+                              echo '<td>'.$categoria->getName().'</td>';
+                              echo '<td>'.$categoria->getDescription().'</td>';
+                              echo '<td>'.$categoria->getStatus().'</td>';
+                                echo '<td><div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="false">Ações <span class="caret"></span>
+                                </button>
+                                <ul role="menu" class="dropdown-menu">
+                                <li>
+                                <a href="#"
+                                data-toggle="modal"
+                                data-description="'.$categoria->getDescription().'"
+                                data-id="'.$categoria->getId().'"
+                                data-name="'.$categoria->getName().'"
+                                data-status="'.$categoria->getStatus().'"
+                                data-target="#dialog-edit-categoria"
+                                >Alterar</a>
+                                </li>
+                                <li>
+                                <a data-toggle="modal"
+                                  data-id="'.$categoria->getId().'"
+                                  data-name="'.$categoria->getName().'"
+                                  data-target="#dialog-delete-categoria">Excluir</a>
+                                </li>
+                                </ul>
+                                </div></td></tr>';
+                            }
+
+                             ?>
+                        </tbody>
+                      </table>
+                      <?php
+                      if(isset($_GET['status'])){
+                        switch ($_GET['status']) {
+                          case 'removed':
+                          echo '<center><div class="alert alert-success alert-dismissible fade in" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+                          <strong>Removido com sucesso!</strong>
+                          </div></center>';
+                          break;
+
+                          case 'error':
+                          echo '<center><div class="alert alert-danger alert-dismissible fade in" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+                          <strong>Houve um erro ao adicionar. Tente novamente!</strong>
+                          </div></center>';
+                          break;
+
+                          case 'updated':
+                          echo '<center><div class="alert alert-success alert-dismissible fade in" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+                          <strong>Atualizado com sucesso!</strong>
+                          </div></center>';
+                          break;
+
+                          case 'add':
+                          echo '<center><div class="alert alert-success alert-dismissible fade in" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+                          <strong>Adicionado com sucesso!</strong>
+                          </div></center>';
+                          break;
+
+                          default:
+                          // code...
+                          break;
+                        }
+
+                      } ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
 </body>
-</html>
+
+<?php
+require_once "footer.php";
+ ?>
